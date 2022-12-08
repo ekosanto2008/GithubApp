@@ -30,7 +30,7 @@ class UserAdapter(private val listUser: List<User>) : RecyclerView.Adapter<UserA
             .into(holder.binding.imgUser)
 
         holder.binding.tvLogin.text = user.login
-        holder.binding.tvName.text = user.url
+        holder.binding.tvName.text = user.html_url
 
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser[holder.absoluteAdapterPosition]) }
     }

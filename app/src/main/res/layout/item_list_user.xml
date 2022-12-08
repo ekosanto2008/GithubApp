@@ -33,8 +33,11 @@
         <TextView
             android:id="@+id/tv_name"
             style="@style/txt_user"
+            android:autoLink="web"
+            android:textColorLink="@color/purple_700"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toEndOf="@id/img_user"
-            app:layout_constraintBottom_toBottomOf="@id/img_user"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_login"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
