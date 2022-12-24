@@ -1,5 +1,6 @@
 package com.takeshi.gouda.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.takeshi.gouda.R
-import com.takeshi.gouda.data.User
+import com.takeshi.gouda.model.User
 import com.takeshi.gouda.databinding.ActivityMainBinding
 import com.takeshi.gouda.ui.adapter.UserAdapter
 import com.takeshi.gouda.ui.viewmodel.MainViewModel
@@ -55,5 +56,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSelectedUser(data: User) {
         Toast.makeText(this, "You Choose " + data.login, Toast.LENGTH_SHORT).show()
+        val intent = Intent(this@MainActivity, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.DETAIL_KEY, data.login)
+        startActivity(intent)
     }
 }

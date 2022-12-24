@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/echo_200"
     tools:context=".ui.MainActivity">
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:elevation="2dp"
+        android:queryHint="search..."
+        android:background="@drawable/searchview"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ProgressBar
         android:id="@+id/pg_user"
@@ -20,9 +32,9 @@
         android:id="@+id/rv_user"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="7dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_view"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_list_user"/>
 

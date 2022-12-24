@@ -1,4 +1,4 @@
-package com.takeshi.gouda.data
+package com.takeshi.gouda.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -3,4 +3,10 @@
     <string name="armstrong">armstrong</string>
     <string name="title">Github</string>
     <string name="token">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</string>
+    <string name="image_profile">image profile</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="repository">Repository</string>
+    <string name="_100">0</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

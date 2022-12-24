@@ -5,13 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="7dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp"
     android:elevation="1dp"
     app:cardCornerRadius="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/echo_100">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_user"
@@ -34,7 +38,7 @@
             android:id="@+id/tv_name"
             style="@style/txt_user"
             android:autoLink="web"
-            android:textColorLink="@color/purple_700"
+            android:textColorLink="@color/white"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toEndOf="@id/img_user"
             app:layout_constraintTop_toBottomOf="@id/tv_login"/>

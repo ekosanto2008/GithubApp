@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.takeshi.gouda.data.User
+import com.takeshi.gouda.model.User
 import com.takeshi.gouda.databinding.ItemListUserBinding
 
 class UserAdapter(private val listUser: List<User>) : RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
