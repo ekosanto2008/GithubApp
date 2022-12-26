@@ -1,4 +1,4 @@
-package com.takeshi.gouda.ui
+package com.takeshi.gouda.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.takeshi.gouda.databinding.FragmentFollowersBinding
 import com.takeshi.gouda.model.User
-import com.takeshi.gouda.ui.adapter.UserAdapter
+import com.takeshi.gouda.ui.activity.DetailActivity
+import com.takeshi.gouda.adapter.UserAdapter
 import com.takeshi.gouda.ui.viewmodel.FollowersViewModel
 
 class FollowersFragment : Fragment() {

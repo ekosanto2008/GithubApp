@@ -8,5 +8,6 @@
     <string name="followers">Followers</string>
     <string name="repository">Repository</string>
     <string name="_100">0</string>
+    <string name="setting">Setting</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

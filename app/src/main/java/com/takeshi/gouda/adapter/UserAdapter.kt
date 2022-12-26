@@ -1,4 +1,4 @@
-package com.takeshi.gouda.ui.adapter
+package com.takeshi.gouda.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

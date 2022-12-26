@@ -1,4 +1,4 @@
-package com.takeshi.gouda.ui
+package com.takeshi.gouda.ui.activity
 
 import android.os.Bundle
 import androidx.annotation.StringRes
@@ -10,7 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.takeshi.gouda.R
-import com.takeshi.gouda.ui.adapter.SectionsPagerAdapter
+import com.takeshi.gouda.adapter.SectionsPagerAdapter
 import com.takeshi.gouda.databinding.ActivityDetailBinding
 import com.takeshi.gouda.ui.viewmodel.DetailViewModel
 
