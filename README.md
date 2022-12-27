@@ -1,4 +1,4 @@
-# RecyclerView-Retrofit
+# Github App Course
 - Recyclerview
 - Cardview
 - ViewBinding
