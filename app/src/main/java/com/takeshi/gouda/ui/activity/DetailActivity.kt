@@ -1,6 +1,8 @@
 package com.takeshi.gouda.ui.activity
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.takeshi.gouda.R
 import com.takeshi.gouda.adapter.SectionsPagerAdapter
+import com.takeshi.gouda.build.UserViewModelFactory
 import com.takeshi.gouda.databinding.ActivityDetailBinding
 import com.takeshi.gouda.ui.viewmodel.DetailViewModel
 
@@ -26,7 +29,8 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(this, injection)[DetailViewModel::class.java]
 
         getData()
         tabView()
@@ -35,19 +39,34 @@ class DetailActivity : AppCompatActivity() {
     private fun getData() {
         val login = intent.getStringExtra(DETAIL_KEY)
         if (login != null) {
-            viewModel.getDetailUser(login)
-            viewModel.observeUserLiveData().observe(this) { detailUser ->
-                binding.item1.text = detailUser.followers.toString()
-                binding.item2.text = detailUser.following.toString()
-                binding.item3.text = detailUser.public_repos.toString()
-                Glide.with(this)
-                    .load(detailUser.avatar_url)
-                    .apply(RequestOptions())
-                    .into(binding.imgDetail)
-                supportActionBar?.title = detailUser.name
+            viewModel.getDetailUser(login).observe(this){ result ->
+                if (result != null) {
+                    when(result) {
+                        is com.takeshi.gouda.Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is com.takeshi.gouda.Result.Success -> {
+                            showLoading(false)
+                            binding.item1.text = result.data.followers.toString()
+                            binding.item2.text = result.data.following.toString()
+                            binding.item3.text = result.data.public_repos.toString()
+                            Glide.with(this)
+                                .load(result.data.avatar_url)
+                                .apply(RequestOptions())
+                                .into(binding.imgDetail)
+                            supportActionBar?.title = result.data.name
+                        }
+                        is com.takeshi.gouda.Result.Error -> {
+                            showLoading(false)
+                            Toast.makeText(this, "Error : ${result.error}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
         }
     }
+
+
 
     private fun tabView() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
@@ -59,6 +78,10 @@ class DetailActivity : AppCompatActivity() {
         }.attach()
 
         supportActionBar?.elevation = 0f
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.pgUser.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

@@ -8,6 +8,15 @@
     android:background="@color/echo_200"
     tools:context=".ui.activity.DetailActivity">
 
+    <ProgressBar
+        android:id="@+id/pg_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/img_detail"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_detail"
         android:layout_width="130dp"

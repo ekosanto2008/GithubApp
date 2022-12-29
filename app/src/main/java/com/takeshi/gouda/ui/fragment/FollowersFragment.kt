@@ -13,6 +13,7 @@ import com.takeshi.gouda.databinding.FragmentFollowersBinding
 import com.takeshi.gouda.model.User
 import com.takeshi.gouda.ui.activity.DetailActivity
 import com.takeshi.gouda.adapter.UserAdapter
+import com.takeshi.gouda.build.UserViewModelFactory
 import com.takeshi.gouda.ui.viewmodel.FollowersViewModel
 
 class FollowersFragment : Fragment() {
@@ -26,28 +27,42 @@ class FollowersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[FollowersViewModel::class.java]
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(requireContext())
+        viewModel = ViewModelProvider(this, injection)[FollowersViewModel::class.java]
         _binding = FragmentFollowersBinding.inflate(inflater, container, false)
+        binding.rvFollow.setHasFixedSize(true)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.rvFollow.setHasFixedSize(true)
-        binding.pgUser.visibility = View.VISIBLE
-        activity?.intent?.getStringExtra(DETAIL_KEY)?.let { viewModel.getFollowers(it) }
-        viewModel.observeUserLiveData().observe(viewLifecycleOwner) {  userList ->
-            binding.pgUser.visibility = View.GONE
-            val listUserAdapter = UserAdapter(userList)
-            binding.rvFollow.adapter = listUserAdapter
+        activity?.intent?.getStringExtra(DETAIL_KEY)?.let {
+            viewModel.getFollowers(it).observe(viewLifecycleOwner){ result ->
+                if (result != null) {
+                    when(result) {
+                        is com.takeshi.gouda.Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is com.takeshi.gouda.Result.Success -> {
+                            showLoading(false)
+                            val listUserAdapter = UserAdapter(result.data)
+                            binding.rvFollow.adapter = listUserAdapter
 
-            listUserAdapter.setOnItemClickCallBack(object : UserAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: User) {
-                    showSelectedUser(data)
+                            listUserAdapter.setOnItemClickCallBack(object : UserAdapter.OnItemClickCallback {
+                                override fun onItemClicked(data: User) {
+                                    showSelectedUser(data)
+                                }
+
+                            })
+                            binding.rvFollow.layoutManager = LinearLayoutManager(context)
+                        }
+                        is com.takeshi.gouda.Result.Error -> {
+                            showLoading(false)
+                            Toast.makeText(context, "Error : ${result.error}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-
-            })
+            }
         }
-        binding.rvFollow.layoutManager = LinearLayoutManager(context)
     }
 
     private fun showSelectedUser(data: User) {
@@ -64,6 +79,10 @@ class FollowersFragment : Fragment() {
 
     companion object {
         const val DETAIL_KEY = "detail_key"
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.pgUser.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 }

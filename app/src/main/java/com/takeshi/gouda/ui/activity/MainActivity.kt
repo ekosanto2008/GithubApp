@@ -13,9 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.takeshi.gouda.R
-import com.takeshi.gouda.model.User
-import com.takeshi.gouda.databinding.ActivityMainBinding
 import com.takeshi.gouda.adapter.UserAdapter
+import com.takeshi.gouda.build.UserViewModelFactory
+import com.takeshi.gouda.databinding.ActivityMainBinding
+import com.takeshi.gouda.model.User
 import com.takeshi.gouda.ui.viewmodel.MainViewModel
 import com.takeshi.gouda.ui.viewmodel.SearchViewModel
 
@@ -36,31 +37,72 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModelSearch = ViewModelProvider(this)[SearchViewModel::class.java]
 
 //      flexible recyclerview
         binding.rvUser.setHasFixedSize(true)
-        showRecyclerList()
-        dataSearch(query = String())
+        setupViewModel()
         searchUser()
     }
 
-    private fun dataSearch(query: String) {
-        binding.pgUser.visibility = View.VISIBLE
-        viewModelSearch.searchUser(query)
-        viewModelSearch.observeUserLiveData().observe(this){ dataList ->
-            binding.pgUser.visibility = View.GONE
-            val userListAdapter = UserAdapter(dataList)
-            binding.rvUser.adapter = userListAdapter
-            binding.rvUser.layoutManager = LinearLayoutManager(this@MainActivity)
+    private fun setupViewModel() {
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(this, injection)[MainViewModel::class.java]
+        viewModel.getUsers().observe(this) { result ->
+            if (result != null) {
+                when(result) {
+                    is com.takeshi.gouda.Result.Loading -> {
+                        showLoading(true)
+                    }
+                    is com.takeshi.gouda.Result.Success -> {
+                        showLoading(false)
+                        val listUserAdapter = UserAdapter(result.data)
+                        binding.rvUser.adapter = listUserAdapter
 
-            userListAdapter.setOnItemClickCallBack(object : UserAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: User) {
-                    showSelectedUser(data)
+                        listUserAdapter.setOnItemClickCallBack(object : UserAdapter.OnItemClickCallback {
+                            override fun onItemClicked(data: User) {
+                                showSelectedUser(data)
+                            }
+
+                        })
+                        binding.rvUser.layoutManager = LinearLayoutManager(this@MainActivity)
+                    }
+                    is com.takeshi.gouda.Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Error : ${result.error}", Toast.LENGTH_SHORT).show()
+                    }
                 }
+            }
+        }
+    }
 
-            })
+    private fun dataSearch(login: String) {
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(this)
+        viewModelSearch = ViewModelProvider(this, injection)[SearchViewModel::class.java]
+        viewModelSearch.getSearch(login).observe(this){ result ->
+            if (result != null) {
+                when(result) {
+                    is com.takeshi.gouda.Result.Loading -> {
+                        showLoading(true)
+                    }
+                    is com.takeshi.gouda.Result.Success -> {
+                        showLoading(false)
+                        val listUserAdapter = UserAdapter(result.data.items)
+                        binding.rvUser.adapter = listUserAdapter
+
+                        listUserAdapter.setOnItemClickCallBack(object : UserAdapter.OnItemClickCallback {
+                            override fun onItemClicked(data: User) {
+                                showSelectedUser(data)
+                            }
+
+                        })
+                        binding.rvUser.layoutManager = LinearLayoutManager(this@MainActivity)
+                    }
+                    is com.takeshi.gouda.Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Error : ${result.error}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 
@@ -77,29 +119,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                showRecyclerList()
+                setupViewModel()
                 return false
             }
 
         })
-    }
-
-    private fun showRecyclerList() {
-        binding.pgUser.visibility = View.VISIBLE
-        viewModel.getUsers()
-        viewModel.observeUserLiveData().observe(this) { userList ->
-            binding.pgUser.visibility = View.GONE
-            val listUserAdapter = UserAdapter(userList)
-            binding.rvUser.adapter = listUserAdapter
-
-            listUserAdapter.setOnItemClickCallBack(object : UserAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: User) {
-                    showSelectedUser(data)
-                }
-
-            })
-        }
-        binding.rvUser.layoutManager = LinearLayoutManager(this@MainActivity)
     }
 
     private fun showSelectedUser(data: User) {
@@ -122,5 +146,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.pgUser.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
