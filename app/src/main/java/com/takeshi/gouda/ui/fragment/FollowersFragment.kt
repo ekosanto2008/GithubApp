@@ -27,7 +27,7 @@ class FollowersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(requireContext())
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance()
         viewModel = ViewModelProvider(this, injection)[FollowersViewModel::class.java]
         _binding = FragmentFollowersBinding.inflate(inflater, container, false)
         binding.rvFollow.setHasFixedSize(true)

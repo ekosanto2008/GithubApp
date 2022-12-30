@@ -1,6 +1,5 @@
 package com.takeshi.gouda.factory
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.takeshi.gouda.di.UserInjection
@@ -13,13 +12,14 @@ class UserViewModelFactory private constructor(private val userRepository: UserR
         throw IllegalArgumentException(message)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                DetailViewModel(userRepository) as T
+                return DetailViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 SearchViewModel(userRepository) as T
@@ -38,7 +38,7 @@ class UserViewModelFactory private constructor(private val userRepository: UserR
 
     companion object {
         private var instance: UserViewModelFactory? = null
-        fun getInstance(context: Context): UserViewModelFactory = instance ?: synchronized(this) {
+        fun getInstance(): UserViewModelFactory = instance ?: synchronized(this) {
             instance ?: UserViewModelFactory(UserInjection.provideRepository())
         }
     }

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(this)
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance()
         viewModel = ViewModelProvider(this, injection)[MainViewModel::class.java]
         viewModel.getUsers().observe(this) { result ->
             if (result != null) {
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun dataSearch(login: String) {
-        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(this)
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance()
         viewModelSearch = ViewModelProvider(this, injection)[SearchViewModel::class.java]
         viewModelSearch.getSearch(login).observe(this){ result ->
             if (result != null) {

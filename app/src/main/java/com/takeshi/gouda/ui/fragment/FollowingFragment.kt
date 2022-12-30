@@ -26,7 +26,7 @@ class FollowingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(requireContext())
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance()
         viewModel = ViewModelProvider(this, injection)[FollowingViewModel::class.java]
         _binding = FragmentFollowingBinding.inflate(inflater, container, false)
         binding.rvFollow.setHasFixedSize(true)

@@ -15,8 +15,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.takeshi.gouda.R
 import com.takeshi.gouda.adapter.SectionsPagerAdapter
-import com.takeshi.gouda.factory.UserViewModelFactory
 import com.takeshi.gouda.databinding.ActivityDetailBinding
+import com.takeshi.gouda.factory.UserViewModelFactory
 import com.takeshi.gouda.ui.viewmodel.DetailViewModel
 
 class DetailActivity : AppCompatActivity(), View.OnClickListener {
@@ -32,7 +32,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val injection: UserViewModelFactory = UserViewModelFactory.getInstance(this)
+        val injection: UserViewModelFactory = UserViewModelFactory.getInstance()
         viewModel = ViewModelProvider(this, injection)[DetailViewModel::class.java]
 
         getData()
