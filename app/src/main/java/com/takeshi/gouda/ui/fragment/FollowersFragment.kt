@@ -66,7 +66,6 @@ class FollowersFragment : Fragment() {
     }
 
     private fun showSelectedUser(data: User) {
-        Toast.makeText(context, "You choose " + data.login, Toast.LENGTH_SHORT).show()
         val intent = Intent(context, DetailActivity::class.java)
         intent.putExtra(DetailActivity.DETAIL_KEY, data.login)
         startActivity(intent)

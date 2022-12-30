@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -18,10 +19,11 @@ import com.takeshi.gouda.factory.UserViewModelFactory
 import com.takeshi.gouda.databinding.ActivityDetailBinding
 import com.takeshi.gouda.ui.viewmodel.DetailViewModel
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var viewModel: DetailViewModel
+    private var isPressed: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +38,7 @@ class DetailActivity : AppCompatActivity() {
         getData()
         tabView()
 
-        binding.btnFav.setOnClickListener { view ->
-            Snackbar.make(view, "Success add to Favorite", Snackbar.LENGTH_SHORT)
-                .setAction("Action", null)
-                .show()
-        }
+        binding.btnFav.setOnClickListener(this)
     }
 
     private fun getData() {
@@ -74,8 +72,6 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun tabView() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
@@ -104,5 +100,23 @@ class DetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    override fun onClick(view: View?) {
+            when(view?.id) {
+                R.id.btn_fav -> {
+                    isPressed = if (isPressed) {
+                        Snackbar.make(view, "Success add to favorite", Snackbar.LENGTH_SHORT)
+                            .show()
+                        binding.btnFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_baseline_favorite_border_24))
+                        false
+                    }else{
+                        Snackbar.make(view, "Success remove from favorite", Snackbar.LENGTH_SHORT)
+                            .show()
+                        binding.btnFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_baseline_favorite_24))
+                        true
+                    }
+                }
+            }
     }
 }

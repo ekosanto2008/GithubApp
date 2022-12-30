@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSelectedUser(data: User) {
-        Toast.makeText(this, "You Choose " + data.login, Toast.LENGTH_SHORT).show()
         val intent = Intent(this@MainActivity, DetailActivity::class.java)
         intent.putExtra(DetailActivity.DETAIL_KEY, data.login)
         startActivity(intent)
