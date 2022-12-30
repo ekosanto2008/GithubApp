@@ -13,7 +13,7 @@ import com.takeshi.gouda.databinding.FragmentFollowersBinding
 import com.takeshi.gouda.model.User
 import com.takeshi.gouda.ui.activity.DetailActivity
 import com.takeshi.gouda.adapter.UserAdapter
-import com.takeshi.gouda.build.UserViewModelFactory
+import com.takeshi.gouda.factory.UserViewModelFactory
 import com.takeshi.gouda.ui.viewmodel.FollowersViewModel
 
 class FollowersFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.takeshi.gouda.build
+package com.takeshi.gouda.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

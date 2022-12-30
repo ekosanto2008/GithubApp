@@ -9,11 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.takeshi.gouda.R
 import com.takeshi.gouda.adapter.SectionsPagerAdapter
-import com.takeshi.gouda.build.UserViewModelFactory
+import com.takeshi.gouda.factory.UserViewModelFactory
 import com.takeshi.gouda.databinding.ActivityDetailBinding
 import com.takeshi.gouda.ui.viewmodel.DetailViewModel
 
@@ -34,6 +35,12 @@ class DetailActivity : AppCompatActivity() {
 
         getData()
         tabView()
+
+        binding.btnFav.setOnClickListener { view ->
+            Snackbar.make(view, "Success add to Favorite", Snackbar.LENGTH_SHORT)
+                .setAction("Action", null)
+                .show()
+        }
     }
 
     private fun getData() {
@@ -55,6 +62,7 @@ class DetailActivity : AppCompatActivity() {
                                 .apply(RequestOptions())
                                 .into(binding.imgDetail)
                             supportActionBar?.title = result.data.name
+                            supportActionBar?.setDisplayHomeAsUpEnabled(true)
                         }
                         is com.takeshi.gouda.Result.Error -> {
                             showLoading(false)
@@ -91,5 +99,10 @@ class DetailActivity : AppCompatActivity() {
             R.string.following
         )
         const val DETAIL_KEY = "detail_key"
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

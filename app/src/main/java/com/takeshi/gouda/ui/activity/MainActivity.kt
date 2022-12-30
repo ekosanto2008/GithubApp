@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.takeshi.gouda.R
 import com.takeshi.gouda.adapter.UserAdapter
-import com.takeshi.gouda.build.UserViewModelFactory
+import com.takeshi.gouda.factory.UserViewModelFactory
 import com.takeshi.gouda.databinding.ActivityMainBinding
 import com.takeshi.gouda.model.User
 import com.takeshi.gouda.ui.viewmodel.MainViewModel

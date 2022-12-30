@@ -9,5 +9,6 @@
     <string name="repository">Repository</string>
     <string name="_100">0</string>
     <string name="setting">Setting</string>
+    <string name="favorite_button">favorite button</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
